@@ -1,10 +1,8 @@
 import ast
 import os
-import json
 import sys
 from collections import defaultdict
 
-# --- The Visitor: Extracts Data from Code ---
 class CodeAnalyzer(ast.NodeVisitor):
     def __init__(self):
         self.stats = {"classes": [], "functions": [], "imports": [], "calls": []}
@@ -48,7 +46,6 @@ class CodeAnalyzer(ast.NodeVisitor):
         elif isinstance(node, ast.Attribute): return f"{self._get_func_name(node.value)}.{node.attr}"
         return None
 
-# --- The Logic: Scans Folders ---
 def analyze_directory(path):
     aggregated = {"classes": [], "functions": [], "imports": [], "calls": []}
     print(f"🚀 Scanning directory: {path}")
@@ -65,29 +62,29 @@ def analyze_directory(path):
                 except Exception as e: print(f"⚠️ Error: {e}")
     return aggregated
 
-# --- The Output: Generates Reports ---
 def generate_outputs(data, output_dir="output"):
     if not os.path.exists(output_dir): os.makedirs(output_dir)
 
-    # 1. Summary
+    # 1. Write Summary
     with open(f"{output_dir}/summary.md", "w") as f:
         f.write(f"# Report\n- Classes: {len(data['classes'])}\n- Functions: {len(data['functions'])}")
 
-    # 2. Graph Logic
-    mermaid = ["graph TD"]
+    # 2. Write Graph (LINE BY LINE to prevent errors)
     counts = defaultdict(int)
     for c in data["calls"]: counts[(c['caller'], c['callee'])] += 1
     
-    for (caller, callee), count in sorted(counts.items(), key=lambda x: x[1], reverse=True)[:50]:
-        mermaid.append(f'    "{caller}" -->|{count}| "{callee}"')
-
-    mermaid_content = "\n".join(mermaid)
-    
-    # 3. Save Markdown Visualization
     with open(f"{output_dir}/Final_Graph.md", "w") as f:
-        f.write(f"# Visualization\n\n```mermaid\n{mermaid_content}\n```")
+        f.write("# Visualization\n\n")
+        f.write("```mermaid\n")
+        f.write("graph TD\n") # <--- Forced Newline Here
+        
+        for (caller, callee), count in sorted(counts.items(), key=lambda x: x[1], reverse=True)[:50]:
+            # Write each arrow on its own line
+            f.write(f'    "{caller}" -->|{count}| "{callee}"\n')
+            
+        f.write("```\n")
 
-    print(f"✅ Done! Open 'output/Final_Graph.md' and press Cmd+Shift+V")
+    print(f"✅ Fixed! Open 'output/Final_Graph.md' and press Cmd+Shift+V")
 
 if __name__ == "__main__":
     analyze_directory(".")
