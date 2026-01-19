@@ -1,27 +1,32 @@
-# Python AST Analyzer & RAG Context Generator
+# Python AST Analyzer & RAG System
 
-A powerful static analysis tool and **RAG (Retrieval-Augmented Generation) System** built with Python's `ast` module. 
+A comprehensive tool for **Static Code Analysis** and **Retrieval-Augmented Generation (RAG)**.
 
-This tool goes beyond simple text search by extracting **Structural Context** (classes, functions, and call dependencies) to power accurate LLM responses, solving the "vocabulary mismatch" problem found in naive RAG approaches.
+This project analyzes Python source code using the `ast` module to extract structural metadata, generating interactive dependency graphs and providing context-aware prompts for AI assistants. It solves the "context gap" in LLMs by injecting precise function scopes and call hierarchies.
 
 ## 🚀 Key Features
 
-### 1. Static Code Analysis
-- **AST-Based Parsing**: Deep-scans source code to understand structure without execution.
-- **Dependency Mapping**: Automatically identifies relationships between functions and classes.
-- **Visual Call Graphs**: Generates interactive Mermaid.js diagrams to visualize execution flow.
+### 1. Static Analysis & Visualization
+- **Deep AST Parsing**: Scans source code without execution to extract classes, functions, and imports.
+- **Dependency Mapping**: Automatically detects caller/callee relationships.
+- **Interactive Graphs**: Generates Mermaid.js diagrams (`Final_Graph.md`) for visual architectural review.
 
 ### 2. RAG Context Generation (New)
-- **Structural Retrieval**: Uses AST metadata instead of vector similarity to find relevant code context.
-- **Context Injection**: Implements **Pattern 2 (Context Injection)** to format code structure into optimized prompts for LLMs.
-- **Scope Awareness**: Preserves function scope and class hierarchy in the generated context.
+- **Context Injection Pattern**: Replaces naive text chunking with structural context extraction.
+- **Vocabulary Matching**: Ensures LLMs understand exact function names and scopes, reducing hallucinations.
+- **Chat Interface**: Includes `chat_with_code.py` to allow natural language querying of the codebase.
+
+### 3. Quality Assurance (QA)
+- **Verified Accuracy**: The RAG system has been audited using the "Context Quality Experiment" protocol.
+- **Results**: Achieved a **5/5 accuracy score** on technical queries compared to a 2/5 baseline.
+- **Report**: View the full audit in [QA_REPORT.md](./QA_REPORT.md).
 
 ## 🛠️ Tech Stack
 
-- **Language**: Python 3.x
-- **Core Library**: `ast` (Abstract Syntax Tree)
-- **Visualization**: Mermaid.js (Markdown based)
-- **RAG Pattern**: Structural Context Injection
+- **Core**: Python 3.x, `ast` module
+- **Visualization**: Mermaid.js (Markdown)
+- **Architecture**: RAG (Retrieval-Augmented Generation) - Context Injection Pattern
+- **Roadmap**: Migrating to VS Code Extension (TypeScript/Webpack)
 
 ## 📂 Installation & Usage
 
